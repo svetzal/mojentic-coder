@@ -4,13 +4,12 @@ Mojentic Coder is an agentic software engineering tool that puts the developer i
 
 ## Features
 
-### Epic 1: Agent Management (In Progress)
+### Agent Management (In Progress)
 
-- Upon launch, the tool opens a full-size window with three blank panels
-- Agents can be defined in the left-hand panel
-  - Agents have a Gateway (OpenAI or Ollama), a Model (the list of models is retrieved via the chosen gateway), and a system prompt that defines their character and behaviour
-- When an Agent is created, a Chat Session is created with the agent, which is displayed in the middle panel
-- When an Agent is created, the user can type a message in the bottom of the middle panel, which is sent to the agent's Chat Session
+- The user can create a series of agents that can be coordinated to solve problems and write code
+- Currently the user can chat with any of the agents individually
+  - Next step is to allow the user to define formation for the agents, we're going to start with an asynchronous eventing style
+- Also started work on a goal/task management system, next step will be to create a series of tools for the agents to interact with the goals / tasks, with the panel reflecting changes in real time as the agents update them asynchronously
 
 ## Installation
 
