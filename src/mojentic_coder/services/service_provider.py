@@ -7,10 +7,13 @@ and provides them to the UI components.
 """
 from typing import Dict, Type, TypeVar, Optional, Any
 
-from mojentic_coder.services.interfaces import AgentServiceInterface, MessageServiceInterface, EngineeringGoalServiceInterface
-from mojentic_coder.services.agent_service import AgentService
+from mojentic_coder.services.interfaces import (
+    AgentServiceInterface, MessageServiceInterface, 
+    EngineeringGoalServiceInterface, TracerServiceInterface
+)
 from mojentic_coder.services.message_service import MessageService
 from mojentic_coder.services.engineering_goal_service import EngineeringGoalService
+from mojentic_coder.services.tracer_service import TracerService
 
 
 T = TypeVar('T')
@@ -37,10 +40,14 @@ class ServiceProvider:
         """Initialize the service provider."""
         self._services: Dict[Type, Any] = {}
 
+        # Import service implementations here to avoid circular imports
+        from mojentic_coder.services.agent_service import AgentService
+
         # Register default service implementations
         self.register(AgentServiceInterface, AgentService())
         self.register(MessageServiceInterface, MessageService())
         self.register(EngineeringGoalServiceInterface, EngineeringGoalService())
+        self.register(TracerServiceInterface, TracerService())
 
     def register(self, interface: Type[T], implementation: T) -> None:
         """
@@ -93,3 +100,13 @@ class ServiceProvider:
             The engineering goal service implementation
         """
         return cls().get(EngineeringGoalServiceInterface)
+
+    @classmethod
+    def get_tracer_service(cls) -> TracerServiceInterface:
+        """
+        Get the tracer service.
+
+        Returns:
+            The tracer service implementation
+        """
+        return cls().get(TracerServiceInterface)

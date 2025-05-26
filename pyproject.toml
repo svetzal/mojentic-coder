@@ -15,7 +15,7 @@ classifiers = [
 dependencies = [
     "structlog>=23.1.0",
     "pydantic>=2.0.0",
-    "mojentic",
+    "mojentic>=0.6.0",
     "pyside6",
 ]
 

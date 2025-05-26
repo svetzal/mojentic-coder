@@ -8,6 +8,9 @@ establishing a clear contract between the UI and the application logic.
 from abc import ABC, abstractmethod
 from typing import List, Optional, Callable, Dict, Any
 
+from mojentic.tracer import TracerSystem
+from mojentic.tracer.tracer_events import TracerEvent
+
 from mojentic_coder.models.agent import Agent, GatewayType
 from mojentic_coder.models.engineering_goal import EngineeringGoal, Task
 
@@ -197,5 +200,44 @@ class EngineeringGoalServiceInterface(ABC):
 
         Returns:
             True if the task was updated, False otherwise
+        """
+        pass
+
+
+class TracerServiceInterface(ABC):
+    """
+    Interface for tracer services.
+
+    This service provides a TracerSystem with an observable EventStore for tracing
+    LLM interactions and tool usage.
+    """
+
+    @abstractmethod
+    def get_tracer_system(self) -> TracerSystem:
+        """
+        Get the tracer system.
+
+        Returns:
+            The tracer system
+        """
+        pass
+
+    @abstractmethod
+    def register_callback(self, callback: Callable[[TracerEvent], None]) -> None:
+        """
+        Register a callback function to be called when a new event is stored.
+
+        Args:
+            callback: The callback function to register
+        """
+        pass
+
+    @abstractmethod
+    def get_events(self) -> List[TracerEvent]:
+        """
+        Get all events from the tracer system.
+
+        Returns:
+            A list of all tracer events
         """
         pass

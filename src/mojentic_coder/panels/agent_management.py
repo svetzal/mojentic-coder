@@ -5,7 +5,8 @@ from typing import Callable, Optional
 
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QListWidget,
-    QListWidgetItem, QDialog, QFormLayout, QLineEdit, QTextEdit, QComboBox
+    QListWidgetItem, QDialog, QFormLayout, QLineEdit, QTextEdit, QComboBox,
+    QSplitter
 )
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QColor, QFont
@@ -13,7 +14,8 @@ from PySide6.QtGui import QColor, QFont
 from mojentic_coder.models.agent import Agent, GatewayType, AgentStatus
 from mojentic_coder.config import AppConfig
 from mojentic_coder.services.service_provider import ServiceProvider
-from mojentic_coder.services.interfaces import AgentServiceInterface
+from mojentic_coder.services.interfaces import AgentServiceInterface, TracerServiceInterface
+from mojentic_coder.panels.tracer_panel import TracerPanel
 
 
 class AgentManagementPanel(QWidget):
@@ -40,6 +42,7 @@ class AgentManagementPanel(QWidget):
 
         # Get services from the service provider
         self.agent_service = ServiceProvider.get_agent_service()
+        self.tracer_service = ServiceProvider.get_tracer_service()
 
         # Set up the layout
         layout = QVBoxLayout(self)
@@ -60,10 +63,22 @@ class AgentManagementPanel(QWidget):
 
         layout.addWidget(button_bar)
 
-        # List of agents (spans full height)
+        # Create a splitter to hold the agent list and tracer panel
+        self.splitter = QSplitter(Qt.Vertical)
+
+        # List of agents
         self.agent_list = QListWidget()
         self.agent_list.itemClicked.connect(self.select_agent)
-        layout.addWidget(self.agent_list)
+        self.splitter.addWidget(self.agent_list)
+
+        # Tracer panel
+        self.tracer_panel = TracerPanel(self.tracer_service.get_tracer_system())
+        self.splitter.addWidget(self.tracer_panel)
+
+        # Set initial sizes (70% agent list, 30% tracer panel)
+        self.splitter.setSizes([700, 300])
+
+        layout.addWidget(self.splitter)
 
         # Populate the agent list with existing agents
         self.populate_agent_list()
