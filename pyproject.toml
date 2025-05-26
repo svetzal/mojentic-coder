@@ -1,0 +1,39 @@
+[project]
+name = "mojentic-coder"
+version = "0.1.0"
+authors = [
+    { name = "Stacey Vetzal", email = "stacey@vetzal.com" },
+]
+description = "Mojentic Coder is an agentic software engineering tool."
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+]
+dependencies = [
+    "structlog>=23.1.0",
+    "pydantic>=2.0.0",
+    "mojentic",
+    "pyside6",
+]
+
+[project.scripts]
+mojentic-coder = "mojentic_coder.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-spec",
+    "pytest-cov",
+    "pytest-mock>=3.10.0",
+    "flake8>=6.0.0",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
